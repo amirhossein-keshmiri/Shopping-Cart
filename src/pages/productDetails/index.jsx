@@ -4,9 +4,15 @@ import { ShoppingCartContext } from "../../context";
 
 export default function ProductDetailsPage() {
   const { id } = useParams();
-  const navigate = useNavigate();
-  const { productDetails, setProductDetails, loading, setLoading, handleAddToCart } =
-    useContext(ShoppingCartContext);
+
+  const {
+    productDetails,
+    setProductDetails,
+    loading,
+    setLoading,
+    handleAddToCart,
+    cartItems,
+  } = useContext(ShoppingCartContext);
   async function fetchProductDetails(id) {
     const apiResponse = await fetch(`https://dummyjson.com/products/${id}`);
     const result = await apiResponse.json();
@@ -19,7 +25,6 @@ export default function ProductDetailsPage() {
   useEffect(() => {
     fetchProductDetails(id);
   }, [id]);
-
 
   if (loading) return <h1>Loading Product Details!Please wait ...</h1>;
 
@@ -56,8 +61,15 @@ export default function ProductDetailsPage() {
             </div>
             <div>
               <button
+                disabled={
+                  productDetails
+                    ? cartItems.findIndex(
+                        (item) => item.id === productDetails.id
+                      ) > -1
+                    : false
+                }
                 onClick={() => handleAddToCart(productDetails)}
-                className="min-w-[200px] mt-6 py-3 bg-cyan-700 text-white bg-transparent border border-cyan-700 hover:bg-cyan-700 hover:text-white font-semibold hover:border-transparent"
+                className="disabled:opacity-65 min-w-[200px] mt-6 py-3 bg-cyan-700 text-white bg-transparent border border-cyan-700 hover:bg-cyan-700 hover:text-white font-semibold hover:border-transparent"
               >
                 Add to Cart
               </button>

@@ -35,8 +35,9 @@ export default function CartListPage() {
           </ul>
           <div className="mt-5 flex gap-2">
             <button
+            disabled = {cartItems.length === 0}
               onClick={() => navigate("/checkout")}
-              className="text-sm px-4 py-3 bg-black text-white font-extrabold"
+              className="disabled:opacity-60 text-sm px-4 py-3 bg-black text-white font-extrabold"
             >
               Checkout
             </button>
